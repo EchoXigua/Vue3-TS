@@ -7,8 +7,7 @@
       @click="clickMenuItem"
     >
       <template v-for="item in menus" :key="item.name || item.fullPath">
-        <!-- <MenuItem :menu-info="item"></MenuItem> -->
-        {{item.name}}--{{item.fullPath}}
+        <MenuItem :menu-info="item"></MenuItem>
       </template>
       <!-- <Menu.SubMenu
       key="sub1"
