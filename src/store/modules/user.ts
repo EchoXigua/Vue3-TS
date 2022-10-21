@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import { login } from '@api/login'
+import { login } from '@/api/login'
 
-export const userUserStore = defineStore('111',{
+export const useUserStore = defineStore('user',{
   // id:'user',
   state: () => ({
     menus: [{
@@ -31,6 +31,8 @@ export const userUserStore = defineStore('111',{
     async login(params){
       try {
         const { data } = await login(params) 
+        console.log(data);
+        
       } catch (error) {
         
       }
