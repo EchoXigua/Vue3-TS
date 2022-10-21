@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { login } from '@api/login'
 
 export const userUserStore = defineStore('111',{
   // id:'user',
@@ -20,8 +21,19 @@ export const userUserStore = defineStore('111',{
         title: "routes.demo.demo"
       }
     }],
+    perms: []
   }),
   getters: {
    
   },
+  actions:{
+    /**登录 */
+    async login(params){
+      try {
+        const { data } = await login(params) 
+      } catch (error) {
+        
+      }
+    }
+  }
 })

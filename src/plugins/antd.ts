@@ -11,6 +11,7 @@ import {
   Row,
   Select,
   DatePicker,
+  Button
 } from 'ant-design-vue'
 import type {App} from 'vue'
 
@@ -30,5 +31,6 @@ export function setupAntd(app:App<Element>){
     .use(Col)
     .use(Row)
     .use(Select)
-    .use(DatePicker);
+    .use(DatePicker)
+    .use(Button)
 }

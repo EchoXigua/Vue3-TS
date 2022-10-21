@@ -4,6 +4,8 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import type { App } from 'vue'
 
+import outsideLayout from './outsideLayout'
+
 import Layout from '../layout/index.vue'
 const routes: Array<RouteRecordRaw> = [
   {
@@ -15,7 +17,8 @@ const routes: Array<RouteRecordRaw> = [
       title:'首页'
     },
     children:[]
-  }
+  },
+  ...outsideLayout
 ]
 
 const router = createRouter({
