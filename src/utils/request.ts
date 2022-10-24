@@ -116,7 +116,7 @@ export type BaseResponse<T = any> = Promise<Response<T>>
 
 export const request = async <T = any>(
   config:AxiosRequestConfig,
-  options:RequestOptions
+  options:RequestOptions = {}
 ):Promise<T> => {
   try {
     const { successMsg, errorMsg,permCode,isMock,isGetDataDirectly=true } = options
@@ -128,9 +128,6 @@ export const request = async <T = any>(
     //是mock数据的话，使用mock请求路径前缀
     const fullUrl = `${(isMock ? baseMockUrl : baseApiUrl)+config.url}`
     config.url = uniqueSlash(fullUrl)
-    console.log('处理前的请求路径：',fullUrl);
-    
-    console.log('处理完的请求路径：',config.url);
 
     // if (IS_PROD) {
     //   // 保持api请求的协议与当前访问的站点协议一致

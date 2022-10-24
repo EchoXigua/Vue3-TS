@@ -53,6 +53,9 @@
   import { reactive } from 'vue'
   import { message, Modal } from 'ant-design-vue';
   import { useUserStore } from '@/store/modules/user';
+  import { getImageCaptcha } from '@/api/login';
+
+  import { to } from '@/utils/awaitTo';
 
   const state = reactive({
     loading: false,
@@ -60,13 +63,23 @@
     formInline: {
       username: '',
       password: '',
-      verifyCode: '',
-      captchaId: '',
+      verifyCode: '',//验证码
+      captchaId: '', //验证码id
     },
   });
 
+  //user仓库 pinia
   const userStore = useUserStore()
 
+  //获取验证码
+  const setCaptcha = async ()=>{
+    const { id,img } = await getImageCaptcha({width:100,height:50})
+    state.captcha = img,
+    state.formInline.captchaId = id
+  }
+  setCaptcha()
+
+  //登录，提交用户名密码，验证码，还有验证码id
   const handleSubmit = async()=>{
     const { username, password, verifyCode } = state.formInline
     if (username.trim()==''|| password.trim()=='') {
@@ -80,8 +93,9 @@
     state.loading = true
     console.log(state.formInline);
 
-    const res = await userStore.login()
-
+    const res = await userStore.login(state.formInline)
+    console.log('login res',res);
+    
     setTimeout(()=>{
       message.destroy();
 
