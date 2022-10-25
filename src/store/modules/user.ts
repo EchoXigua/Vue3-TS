@@ -1,18 +1,31 @@
 import { defineStore } from 'pinia'
 import { login } from '@/api/login'
+import { getInfo, permmenu } from '@/api/account'
 //持久化存储的方法
 import { Storage } from '@/utils/Storage';
 //token
 import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum'; 
 //引入ws
-import { useWsStore } from './ws';
+// import { useWsStore } from './ws';
 
+import type { RouteRecordRaw } from 'vue-router';
 
+//生成路由的方法
+import { generatorDynamicRouter } from '@/router/generator-router'
 
+//定义state返回值的类型，不然后面赋值的时候会报错
+interface UserState {
+  token: string;
+  name: string;
+  avatar: string;
+  perms: string[];
+  menus: RouteRecordRaw[];
+  userInfo: Partial<API.AdminUserInfo>;
+}
 
 export const useUserStore = defineStore('user',{
   // id:'user',
-  state: () => ({
+  state: (): UserState => ({
     token: Storage.get(ACCESS_TOKEN_KEY,null), //从LocalStorage里面取token
     name:'amdin',
     avatar:'', //头像
@@ -21,7 +34,18 @@ export const useUserStore = defineStore('user',{
     userInfo: {}
   }),
   getters: {
-   
+    getToken(): string {
+      return this.token;
+    },
+    getAvatar(): string {
+      return this.avatar;
+    },
+    getName(): string {
+      return this.name;
+    },
+    getPerms(): string[] {
+      return this.perms;
+    },
   },
   actions:{
      /** 清空token及用户信息 */
@@ -51,10 +75,23 @@ export const useUserStore = defineStore('user',{
       }
     },
      /** 登录成功之后, 获取用户信息以及生成权限路由 */
-    afterLogin(){
+    async afterLogin(){
       try {
         //websocket
-        const wsStore = useWsStore()
+        // const wsStore = useWsStore()
+
+        
+        const [userInfo,{ perms, menus }] =  await Promise.all([getInfo(),permmenu()])
+        this.perms = perms;
+        this.name = userInfo.name;
+        this.avatar = userInfo.headImg;
+        this.userInfo = userInfo;
+        //生成路由
+        const generatorResult = await generatorDynamicRouter(menus)
+        this.menus = generatorResult.menus.filter((item) => !item.meta?.hideInMenu);
+
+        // !wsStore.client && wsStore.initSocket();
+        return { menus, perms, userInfo };
       } catch (error) {
         return Promise.reject(error);
       }

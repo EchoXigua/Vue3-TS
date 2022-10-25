@@ -7,7 +7,7 @@ import type { App } from 'vue'
 import outsideLayout from './outsideLayout'
 
 import Layout from '../layout/index.vue'
-const routes: Array<RouteRecordRaw> = [
+export const routes: Array<RouteRecordRaw> = [
   {
     path:'/',
     name:'Layout',
@@ -21,7 +21,7 @@ const routes: Array<RouteRecordRaw> = [
   ...outsideLayout
 ]
 
-const router = createRouter({
+export const router = createRouter({
   history:createWebHashHistory(),
   routes
 })
