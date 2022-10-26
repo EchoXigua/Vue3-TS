@@ -13,12 +13,12 @@
       <AsideMenu :collapsed="collapsed" :theme="getTheme" />
     </Layout.Sider>
     <Layout>
-      <!-- <PageHeader v-model:collapsed="collapsed" :theme="getTheme"> -->
+      <PageHeader v-model:collapsed="collapsed" :theme="getTheme">
         <template v-if="themeStore.layout === 'topmenu'" #default>
           <Logo :collapsed="collapsed" />
           <AsideMenu :collapsed="collapsed" :theme="getTheme" />
         </template>
-      <!-- </PageHeader> -->
+      </PageHeader>
       <Layout.Content class="layout-content">
         <!-- <tabs-view /> -->
       </Layout.Content>
